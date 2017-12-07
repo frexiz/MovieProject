@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <script>
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Chrome, Safari and Opera
+            document.documentElement.scrollTop = 0; // For IE and Firefox
+        }
+    </script>
+</head>
+<body>
+<header th:include="fragments/navbar"></header>
+
+<div class="row">
+    <div th:each="movie,favourites  : ${user.favourites}">
+        <div class="col-lg-4">
+            <h4 th:text="${movie.name}"></h4>
+            <img class="col-sm-4" th:src="${movie.poster}"/>
+        </div>
+    </div>
+</div>
+<div class="container col-lg-12">
+    <div>
+        <!--<img th:attr = "src=@{${image}}"/>-->
+        <!--th:action="@{/admin/users/edit/{id}(id=${user.id})}"-->
+        <div class="well col-lg-10 col-sm-offset-1">
+            <a th:href="@{/user/edit/{id}(id=${user.id})}"> <span class="glyphicon glyphicon-pencil pull-right"> </span></a>
+
+            <div class="col-sm-offset-1">
+                <h1 th:text="'Hello,  ' + ${user.fullName}"></h1>
+            </div>
+            <hr/>
+            <div class="row">
+                <form class="form-horizontal" th:action="@{/}" method="get">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="user_email">Email</label>
+                            <div class="col-sm-4 ">
+                                <input class="form-control" type="email" id="user_email" placeholder="Email"
+                                       name="email"
+                                       required="required" th:value="${user.email}" disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="user_fullname">Full Name</label>
+                            <div class="col-sm-4 ">
+                                <input class="form-control" type="text" id="user_fullname" placeholder="Full Name"
+                                       name="fullName" required="required" th:value="${user.fullName}"
+                                       disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="user_roles">Role</label>
+                            <div class="col-sm-4 ">
+                                <input class="form-control" type="text" id="user_roles" placeholder="Full Name"
+                                       name="roles" required="required" th:value="${roleName}" disabled="disabled"/>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><span class="glyphicon glyphicon-chevron-up"></span>
+    </button>
+
+</div>
+
+
+<header th:include="fragments/footer"></header>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

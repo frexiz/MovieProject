@@ -1,0 +1,70 @@
+<header class="header-wrapper header-wrapper--home">
+    <div class="container">
+        <!-- Logo link-->
+        <a th:href="@{/}" class="logo">
+            <img alt='logo' th:src="@{~/images/logo.png}"/>
+        </a>
+
+        <!-- Main website navigation-->
+        <nav id="navigation-box">
+            <!-- Toggle for mobile menu mode -->
+            <a href="#" id="navigation-toggle">
+                        <span class="menu-icon">
+                            <span class="icon-toggle" role="button" aria-label="Toggle Navigation">
+                              <span class="lines"></span>
+                            </span>
+                        </span>
+            </a>
+
+            <!-- Link navigation -->
+            <ul id="navigation">
+                <li sec:authorize="isAuthenticated()">
+                    <span class="sub-nav-toggle plus"></span>
+                    <a href="#">Mega menu</a>
+                    <ul class="mega-menu container">
+                        <li class="col-md-3 mega-menu__coloum">
+                            <h4 class="mega-menu__heading">Now in the cinema</h4>
+                            <ul class="mega-menu__list">
+                                <li sec:authorize="hasRole('ROLE_ADMIN')" class="mega-menu__nav-item"><a th:href="@{/movie/add}">
+                                    ADD MOVIE</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')" class="mega-menu__nav-item"><a th:href="@{/actor/add}">
+                                    ADD ACTOR</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')" class="mega-menu__nav-item"><a th:href="@{/actor/listAll}">
+                                    LIST ALL ACTORS</a></li>
+                                <li sec:authorize="isAuthenticated()" class="mega-menu__nav-item"><a th:href="@{/user/favourites}">
+                                    FAVOURITES</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Additional header buttons / Auth and direct link to booking-->
+        <div sec:authorize="isAuthenticated()" class="control-panel">
+            <div class="auth auth--home">
+                <div class="auth__show">
+                        <span class="auth__image">
+                          <img alt="" th:src="@{~/images/client-photo/auth.png}"/>
+                        </span>
+                </div>
+                <a  th:href="@{/user/profile/}" class="btn btn--sign btn--singin">
+                    ME
+                </a>
+
+
+                <ul class="auth__function">
+                    <li><a href="#" class="auth__function-item">Watchlist</a></li>
+                    <li><a href="#" class="auth__function-item">Booked tickets</a></li>
+                    <li><a href="#" class="auth__function-item">Discussion</a></li>
+                    <li><a href="#" class="auth__function-item">Settings</a></li>
+                </ul>
+            </div>
+            <a sec:authorize="isAuthenticated()" th:href="@{/auth/logout}"
+               class="btn btn-md btn--warning btn--book btn-control--home ">LOG OUT</a>
+
+        </div>
+
+    </div>
+</header>

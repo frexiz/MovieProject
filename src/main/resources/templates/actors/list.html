@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+
+    <!--notification-->
+    <link rel="stylesheet" type="text/css" href="/sweetalert-master/dist/sweetalert.css"/>
+
+
+    <meta charset="utf-8"/>
+    <title>AMovie</title>
+    <meta name="description" content="A Template by Gozha.net"/>
+    <meta name="keywords" content="HTML, CSS, JavaScript"/>
+    <meta name="author" content="Gozha.net"/>
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="telephone=no" name="format-detection"/>
+
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <!-- Roboto -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel="stylesheet" type="text/css"/>
+    <!-- Open Sans -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel="stylesheet" type="text/css"/>
+
+    <!-- Stylesheets -->
+
+    <!-- Mobile menu -->
+    <link href="/css/gozha-nav.css" rel="stylesheet" type="text/css"/>
+    <!-- Select -->
+    <link href="/css/external/jquery.selectbox.css" rel="stylesheet" type="text/css"/>
+
+    <!--&lt;!&ndash; Slider Revolution CSS Files &ndash;&gt;-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/settings.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/layers.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/navigation.css"/>-->
+
+    <!-- Custom -->
+    <link href="/css/style.css?v=1" rel="stylesheet" type="text/css"/>
+
+
+    <!-- Modernizr -->
+    <script src="js/external/modernizr.custom.js"></script>
+
+    <script src="/sweetalert-master/dist/sweetalert.min.js"></script>
+
+    <script>
+
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Chrome, Safari and Opera
+            document.documentElement.scrollTop = 0; // For IE and Firefox
+        }
+    </script>
+
+
+</head>
+
+<body>
+<div class="wrapper">
+    <!-- Banner -->
+    <div class="banner-top">
+        <img alt='top banner' th:src="@{~/images/banners/bra.jpg}"/>
+    </div>
+
+    <!-- Header section -->
+    <header th:include="fragments/navbar"></header>
+
+        <p class="login__title">LIST ALL actors <br/><span class="login-edition"></span></p>
+
+        <div class="field-wrap">
+            <table class="table table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="actor, iterStat : ${actors}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${actor.fullName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<footer class="footer-wrapper footer-wrapper--mod">
+    <section class="container">
+        <div class="col-xs-4 col-md-2 footer-nav">
+            <ul class="nav-link">
+                <li><a href="#" class="nav-link__item">Cities</a></li>
+                <li><a href="movie-list-left.html" class="nav-link__item">Movies</a></li>
+                <li><a href="trailer.html" class="nav-link__item">Trailers</a></li>
+                <li><a href="rates-left.html" class="nav-link__item">Rates</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-4 col-md-2 footer-nav">
+            <ul class="nav-link">
+                <li><a href="coming-soon.html" class="nav-link__item">Coming soon</a></li>
+                <li><a href="cinema-list.html" class="nav-link__item">Cinemas</a></li>
+                <li><a href="offers.html" class="nav-link__item">Best offers</a></li>
+                <li><a href="news-left.html" class="nav-link__item">News</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-4 col-md-2 footer-nav">
+            <ul class="nav-link">
+                <li><a href="#" class="nav-link__item">Terms of use</a></li>
+                <li><a href="gallery-four.html" class="nav-link__item">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link__item">Contacts</a></li>
+                <li><a href="page-elements.html" class="nav-link__item">Shortcodes</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="footer-info">
+                <p class="heading-special--small">A.Movie<br/><span class="title-edition">in the social media</span></p>
+
+                <div class="social">
+                    <a href='#' class="social__variant fa fa-facebook"></a>
+                    <a href='#' class="social__variant fa fa-twitter"></a>
+                    <a href='#' class="social__variant fa fa-vk"></a>
+                    <a href='#' class="social__variant fa fa-instagram"></a>
+                    <a href='#' class="social__variant fa fa-tumblr"></a>
+                    <a href='#' class="social__variant fa fa-pinterest"></a>
+                </div>
+
+                <div class="clearfix"></div>
+                <p class="copy">&copy; A.Movie, 2013. All rights reserved. Done by Olia Gozha</p>
+            </div>
+        </div>
+    </section>
+</footer>
+
+<!-- JavaScript-->
+<!-- jQuery 3.1.1-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="js/external/jquery-3.1.1.min.js"><\/script>')</script>-->
+<!-- Migrate -->
+<script src="js/external/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap 3-->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!-- Mobile menu -->
+<script src="js/jquery.mobile.menu.js"></script>
+<!-- Select -->
+<script src="js/external/jquery.selectbox-0.2.min.js"></script>
+<!-- Form element -->
+<script src="js/external/form-element.js"></script>
+<!-- Form validation -->
+<script src="js/form.js"></script>
+
+<!-- Custom -->
+<script src="js/custom.js"></script>
+
+
+</body>
+</html>

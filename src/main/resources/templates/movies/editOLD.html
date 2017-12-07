@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <script>
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Chrome, Safari and Opera
+            document.documentElement.scrollTop = 0; // For IE and Firefox
+        }
+    </script>
+</head>
+<body>
+<header th:include="fragments/navbar"></header>
+
+
+<div class="container col-lg-12">
+    <div>
+        <div class="well col-lg-10 col-sm-offset-1">
+            <form class="form-horizontal" th:action="@{/users/edit/{id}(id=${movie.id})}" method="post">
+                <fieldset>
+                    <h2>Edit Movie</h2>
+                    <hr/>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_email">Name</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" type="email" id="user_email" placeholder="Name" name="name"
+                                   required="required" th:value="${movie.name}"/>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-4 control-label" for="user_fullname">Full Name</label>-->
+                        <!--<div class="col-sm-4 ">-->
+                            <!--<input class="form-control" type="text" id="user_fullname" placeholder="Full Name"-->
+                                   <!--name="fullName" required="required" th:value="${user.fullName}"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-4 control-label" for="user_password_first">Password</label>-->
+                        <!--<div class="col-sm-4">-->
+                            <!--<input type="password" class="form-control" id="user_password_first" placeholder="Password"-->
+                                   <!--name="password"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-4 control-label" for="user_password_second">Confirm Password</label>-->
+                        <!--<div class="col-sm-4">-->
+                            <!--<input type="password" class="form-control" id="user_password_second" placeholder="Password"-->
+                                   <!--name="confirmPassword"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-4 control-label" for="roles">Roles</label>-->
+                        <!--<div class="col-sm-6">-->
+                            <!--<th:block th:each="role : ${roles}">-->
+                                <!--<input id="roles" type="checkbox" name="roles" th:value="${role.id}" th:text="${role.getSimpleName()}" th:checked="${user.roles.contains(role)}"/>-->
+                                <!--<br/>-->
+                            <!--</th:block>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" th:href="@{/}">Cancel</a>
+                            <input value="Save" type="submit" class="btn btn-success"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><span class="glyphicon glyphicon-chevron-up"></span>
+    </button>
+
+</div>
+
+
+<header th:include="fragments/footer"></header>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+    <!--notification-->
+    <link rel="stylesheet" type="text/css" href="/sweetalert-master/dist/sweetalert.css"/>
+    <script src="/sweetalert-master/dist/sweetalert.min.js"></script>
+
+    <script>
+        function hello(id) {
+
+            console.log(id);
+            var url = window.location;
+            $.ajax({
+                type: "GET",
+                url: url + "rest/add/favourite/" + id,
+                success: function (data) {
+                    swal(data[0], data[1], "success");
+                },
+                error: function (e) {
+
+                }
+            });
+        }
+
+        function deleteMovie(id) {
+            var url = window.location;
+            $.ajax({
+                type: "GET",
+                url: url + "rest/movie/delete/" + id,
+                success: function (data) {
+                    swal(data[0], data[1], "success");
+                    window.location.href = url;
+
+                },
+                error: function (e) {
+
+                }
+            });
+        }
+
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Chrome, Safari and Opera
+            document.documentElement.scrollTop = 0; // For IE and Firefox
+        }
+    </script>
+
+    <meta charset="utf-8"/>
+    <title>AMovie</title>
+    <meta name="description" content="A Template by Gozha.net"/>
+    <meta name="keywords" content="HTML, CSS, JavaScript"/>
+    <meta name="author" content="Gozha.net"/>
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="telephone=no" name="format-detection"/>
+
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <!-- Roboto -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel="stylesheet" type="text/css"/>
+    <!-- Open Sans -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel="stylesheet" type="text/css"/>
+
+    <!-- Stylesheets -->
+
+    <!-- Mobile menu -->
+    <link href="/css/gozha-nav.css" rel="stylesheet" type="text/css"/>
+    <!-- Select -->
+    <link href="/css/external/jquery.selectbox.css" rel="stylesheet" type="text/css"/>
+
+    <!--&lt;!&ndash; Slider Revolution CSS Files &ndash;&gt;-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/settings.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/layers.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/navigation.css"/>-->
+
+    <!-- Custom -->
+    <link href="/css/style.css?v=1" rel="stylesheet" type="text/css"/>
+
+
+    <!-- Modernizr -->
+    <script src="js/external/modernizr.custom.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <header th:include="fragments/navbar"></header>
+    <div class="container">
+
+        <div class="col-lg-12">
+            <nav class="text-center" aria-label="pagination ">
+                <ul class="pager">
+                    <li id="top-first-page"><a href="" onclick="return false;">First</a></li>
+                    <li id="top-previous-page"><a href="" onclick="return false;">Previous</a></li>
+                    <li id="top-current-page"><a href="" onclick="return false;"
+                                                 style="pointer-events: none; cursor: default;"></a></li>
+                    <li id="top-next-page"><a href="" onclick="return false;">Next</a></li>
+                    <li id="top-last-page"><a href="" onclick="return false;">Last</a></li>
+                </ul>
+            </nav>
+            <div id="movie-container"></div>
+            <nav class="text-center" aria-label="pagination ">
+                <ul class="pager">
+                    <li id="bottom-first-page"><a href="" onclick="return false;">First</a></li>
+                    <li id="bottom-previous-page"><a href="" onclick="return false;">Previous</a></li>
+                    <li id="bottom-current-page"><a href="" onclick="return false;"
+                                                    style="pointer-events: none; cursor: default;"></a></li>
+                    <li id="bottom-next-page"><a href="" onclick="return false;">Next</a></li>
+                    <li id="bottom-last-page"><a href="" onclick="return false;">Last</a></li>
+                </ul>
+            </nav>
+            <button onclick="topFunction()" id="myBtn" title="Go to top"><span
+                    class="glyphicon glyphicon-chevron-up"></span>
+            </button>
+
+        </div>
+
+        <!--Modal - Trailer-->
+
+        <row>
+            <!--<h1>Bootstrap Modal</h1>-->
+            <!--&lt;!&ndash; Trigger the modal with a button &ndash;&gt;-->
+            <!--<button type="button" class="btn btn-info btn-lg" id="btnId">Open Modal</button>-->
+
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="modalId" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Bootstrap Modal content-->
+                    <div class="modal-content" id="modal-id">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="greetingId"></p>
+                            <!-- 16:9 aspect ratio -->
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe id="iframe1" src="" frameborder="0"
+                                        allowfullscreen="true"></iframe>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="close-button" data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </row>
+
+        <!--Modal - Trailer-->
+
+
+        <div id="invisible" style="visibility:hidden">
+        <div class="row" id="movie0">
+        <div class="well col-lg-10 col-sm-offset-1">
+        <div class="col-sm-offset-1">
+        <div class="row">
+        <!--<h3><a th:href="@{/movie/info/{title}(title = ${movie.name})}">Edit</a></h3>-->
+        <!--<h3 class="movieName"><a th:href="@{/}">Edit</a></h3>-->
+        <a class="movie-add" href=""> <span class="glyphicon glyphicon-heart pull-right"> </span></a>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" class="movie-delete" href=""> <span
+        class="glyphicon glyphicon-trash pull-right"> </span></a>
+
+        <!--<h3 class="movieName"><a href="" class="info-modal" onclick="return false;">Edit</a></h3>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<img class="col-lg-2" src="/images/no-image.jpg"/>-->
+        <!--<div class="col-lg-10">-->
+        <!--<div class="row">-->
+        <!--<h4>Description:</h4>-->
+
+        <!--<p id="info"></p>-->
+        <!--&lt;!&ndash;<p>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button href="#" class="btn btn-primary modal-button" role="button">Button</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;<a href="#" class="btn btn-default" role="button">Button</a></p>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<hr/>-->
+        <!--<div class="row">-->
+        <!--<div class="row">-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">YEAR</p>-->
+        <!--<p class="col-lg-2" id="year"></p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">STUDIO</p>-->
+        <!--<p class="col-lg-2" id="studio"></p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">DURATION</p>-->
+        <!--<p class="col-lg-2" id="duration"></p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">LANGUAGE</p>-->
+        <!--<p class="col-lg-2" id="language"></p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">DIRECTOR</p>-->
+        <!--<p class="col-lg-2" id="director"></p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">IMDB RATING</p>-->
+        <!--<p class="col-lg-2" id="rating"></p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">CAST</p>-->
+        <!--<p class="col-lg-2" id="actors"></p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--<p class="col-lg-1 text-center">GENRE</p>-->
+        <!--<p class="col-lg-2" id="categories"></p>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<p class="col-lg-1 text-center">DURATION</p>&ndash;&gt;-->
+        <!--&lt;!&ndash;<p class="col-lg-2">63 min</p>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--</div>-->
+
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div style="visibility:hidden">
+            <div id="movie1">
+                <div class="col-sm-6 movie movie--test movie--test--dark movie--test--left">
+                    <div class="movie__images">
+                        <a href="movie-page-left.html" class="movie-beta__link">
+                            <img  class="movie__image"  alt="" src="images/movie/movie-time8.jpg"/>
+                        </a>
+                    </div>
+
+                    <div class="movie__info">
+                        <a href="" class="movie__title info-modal" onclick="return false;"> </a>
+
+                        <p class="movie__year"></p>
+
+                        <p class="movie__time"></p>
+                        <p class="movie__studio"></p>
+                        <p class="movie__director"></p>
+                        <p class="movie__language"></p>
+                        <p class="movie__actors"></p>
+                        <p class="movie__categories"></p>
+                        <p class="movie__actors"></p>
+
+                        <!--&lt;!&ndash;<p id="categories"></p>&ndash;&gt;-->
+                        <!--<p id="actors"></p>-->
+
+
+                        <div class="movie__rate">
+                            <div class="score" style="cursor: pointer;"><img alt="1" src="images/rate/star-off.svg"
+                                                                             title="bad"/>&nbsp;<img alt="2"
+                                                                                                     src="images/rate/star-off.svg"
+                                                                                                     title="poor"/>&nbsp;<img
+                                    alt="3" src="images/rate/star-off.svg" title="regular"/>&nbsp;<img alt="4"
+                                                                                                       src="images/rate/star-off.svg"
+                                                                                                       title="good"/>&nbsp;<img
+                                    alt="5" src="images/rate/star-off.svg" title="gorgeous"/><input name="score"
+                                                                                                    type="hidden"/>
+                            </div>
+                            <span class="movie__rating"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<header th:include="fragments/footer"></header>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/getrequest.js"></script>
+
+<!-- jQuery 3.1.1-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="js/external/jquery-3.1.1.min.js"><\/script>')</script>-->
+<!-- Migrate -->
+<script src="js/external/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap 3-->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!-- Mobile menu -->
+<script src="js/jquery.mobile.menu.js"></script>
+<!-- Select -->
+<script src="js/external/jquery.selectbox-0.2.min.js"></script>
+<!-- Stars rate -->
+<script src="js/external/jquery.raty.js"></script>
+
+<!-- Form element -->
+<script src="js/external/form-element.js"></script>
+<!-- Form validation -->
+<script src="js/form.js"></script>
+
+
+<!-- Custom -->
+<script src="js/custom.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_Home();
+    });
+</script>
+
+</body>
+</html>

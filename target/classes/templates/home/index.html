@@ -1,0 +1,752 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+
+    <!--notification-->
+    <link rel="stylesheet" type="text/css" href="/sweetalert-master/dist/sweetalert.css"/>
+
+
+    <meta charset="utf-8"/>
+    <title>AMovie</title>
+    <meta name="description" content="A Template by Gozha.net"/>
+    <meta name="keywords" content="HTML, CSS, JavaScript"/>
+    <meta name="author" content="Gozha.net"/>
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="telephone=no" name="format-detection"/>
+
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <!-- Roboto -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel="stylesheet" type="text/css"/>
+    <!-- Open Sans -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel="stylesheet" type="text/css"/>
+
+    <!-- Stylesheets -->
+    <!-- Magnific-popup -->
+    <link href="css/external/magnific-popup.css" rel="stylesheet" />
+    <!-- Mobile menu -->
+    <link href="/css/gozha-nav.css" rel="stylesheet" type="text/css"/>
+    <!-- Select -->
+    <link href="/css/external/jquery.selectbox.css" rel="stylesheet" type="text/css"/>
+
+    <!--&lt;!&ndash; Slider Revolution CSS Files &ndash;&gt;-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/settings.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/layers.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="revolution/css/navigation.css"/>-->
+
+    <!-- Custom -->
+    <link href="/css/style.css?v=1" rel="stylesheet" type="text/css"/>
+
+
+    <!-- Modernizr -->
+    <script src="js/external/modernizr.custom.js"></script>
+
+    <script src="/sweetalert-master/dist/sweetalert.min.js"></script>
+
+    <script>
+        function hello(id) {
+
+            console.log(id);
+            var url = window.location;
+            $.ajax({
+                type: "GET",
+                url: url + "rest/add/favourite/" + id,
+                success: function (data) {
+                    swal(data[0], data[1], "success");
+                },
+                error: function (e) {
+
+                }
+            });
+        }
+
+        function edit(id) {
+
+            console.log(id);
+            var url = window.location + "movie/modify/" + id;
+            console.log(url);
+            location.href = url;
+        }
+
+        function info(id) {
+//            var url = window.location;
+//            $.ajax({
+//                type: "GET",
+//                url: url + "movie/info/" + id,
+//                success: function (data) {},
+//                error: function (e) {
+//
+//                }
+//            });
+
+            console.log(id);
+            var url = window.location + "movie/infoById/" + id;
+            console.log(url);
+            location.href = url;
+        }
+
+        function deleteMovie(id) {
+            var url = window.location;
+            $.ajax({
+                type: "GET",
+                url: url + "rest/movie/delete/" + id,
+                success: function (data) {
+                    swal(data[0], data[1], "success");
+                    window.location.href = url;
+
+                },
+                error: function (e) {
+
+                }
+            });
+        }
+
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Chrome, Safari and Opera
+            document.documentElement.scrollTop = 0; // For IE and Firefox
+        }
+    </script>
+
+
+</head>
+<body>
+<!--<div class="banner-top">-->
+<!--<img  alt='top banner' th:src="@{~/images/banners/bra.jpg}"/>-->
+<!--</div>-->
+
+
+<div class="wrapper">
+    <!-- Banner -->
+    <!--<div class="banner-top">-->
+    <!--<img alt='top banner' src="images/banners/bra.jpg"/>-->
+    <!--</div>-->
+
+    <!-- Header section -->
+    <div>
+        <img alt='top banner' th:src="@{~/images/banners/bra.jpg}"/>
+    </div>
+    <header th:include="fragments/navbar"></header>
+
+    <!-- Main content -->
+    <a href="#nowincinema">dsadsad</a>
+    <section class="container">
+        <div class="movie-best">
+            <div class="col-sm-10 col-sm-offset-1 movie-best__rating">Today Best choice</div>
+            <div class="col-sm-12 change--col">
+                <div th:each="movie : ${movies}" class="movie-beta__item ">
+                    <img height="271px" width="186" alt='' th:attr="src=@{${movie.poster}}"/>
+                    <span th:text="${movie.rating}" class="best-rate">5.0</span>
+
+                    <ul class="movie-beta__info">
+                        <li><span class="best-voted">71 people voted today</span></li>
+                        <li>
+                            <p th:text="${movie.duration}" class="movie__time">169 min</p>
+                            <p>
+                                <span th:each="category, iterStat : ${movie.categories}"
+                                      th:text="${iterStat.last}  ? ${category.name} : ${category.name} + ' |'"></span>
+                            </p>
+                            <p th:text="${#lists.size(movie.comments)}">38 comments</p>
+                        </li>
+                        <li class="last-block">
+                            <a th:href="@{/movie/infoById/{id}(id = ${movie.id})}" class="slide__link">more</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-10 col-sm-offset-1 movie-best__check">check all movies now playing</div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="mega-select-present mega-select-top mega-select--full">
+                <div class="mega-select-marker">
+                    <div class="marker-indecator location">
+                        <p class="select-marker"><span>movie to watch now</span> <br/>in your city</p>
+                    </div>
+
+                    <div class="marker-indecator cinema">
+                        <p class="select-marker"><span>find your </span> <br/>cinema</p>
+                    </div>
+
+                    <div class="marker-indecator film-category">
+                        <p class="select-marker"><span>find movie due to </span> <br/> your mood</p>
+                    </div>
+
+                    <div class="marker-indecator actors">
+                        <p class="select-marker"><span> like particular stars</span> <br/>find them</p>
+                    </div>
+
+                    <div class="marker-indecator director">
+                        <p class="select-marker"><span>admire personalities - find </span> <br/>by director</p>
+                    </div>
+
+                    <div class="marker-indecator country">
+                        <p class="select-marker"><span>search for movie from certain </span> <br/>country?</p>
+                    </div>
+                </div>
+
+                <div class="mega-select pull-right">
+                    <span class="mega-select__point">Search by</span>
+                    <ul class="mega-select__sort">
+                        <li class="filter-wrap"><a href="" class="mega-select__filter" data-filter='film-category'
+                                                   id="category-search">Category</a>
+                        </li>
+                        <li class="filter-wrap"><a href="" class="mega-select__filter" data-filter='actors'
+                                                   id="actors-search">Actors</a>
+                        </li>
+                    </ul>
+
+                    <input width="450px" name="search-input" type='text' class="select__field" id="input-search"/>
+                    <div class="select__btn"><a href="" id="do-clear" class="btn btn-md btn--danger location"
+                                                style="display: inline-block;"><span
+                            class="glyphicon glyphicon-remove hidden-exrtasm"></span></a></div>
+                    <div class="select__btn"><a href="" id="do-search" class="btn btn-md btn--success location"
+                                                style="display: inline-block;"><span
+                            class="glyphicon glyphicon-search hidden-exrtasm"></span></a></div>
+                    <!--<button id="do-search"><span class="glyphicon glyphicon-search"></span></button>-->
+
+                    <div class="select__btn">
+                        <a href="#" class="btn btn-md btn--danger location">find <span
+                                class="hidden-exrtasm">your city</span></a>
+                        <a href="#" class="btn btn-md btn--danger cinema">find <span class="hidden-exrtasm">suitable cimema</span></a>
+                        <a href="#" class="btn btn-md btn--danger film-category">find <span class="hidden-exrtasm">best category</span></a>
+                        <a href="#" class="btn btn-md btn--danger actors">find <span class="hidden-exrtasm">talented actors</span></a>
+                        <a href="#" class="btn btn-md btn--danger director">find <span class="hidden-exrtasm">favorite director</span></a>
+                        <a href="#" class="btn btn-md btn--danger country">find <span class="hidden-exrtasm">produced country</span></a>
+                    </div>
+
+                    <div class="select__dropdowns">
+                        <ul class="select__group location">
+                            <li class="select__variant" data-value='London'>London</li>
+                            <li class="select__variant" data-value='New York'>New York</li>
+                            <li class="select__variant" data-value='Paris'>Paris</li>
+                            <li class="select__variant" data-value='Berlin'>Berlin</li>
+                            <li class="select__variant" data-value='Moscow'>Moscow</li>
+                            <li class="select__variant" data-value='Minsk'>Minsk</li>
+                            <li class="select__variant" data-value='Warsawa'>Warsawa</li>
+                        </ul>
+
+                        <ul class="select__group cinema">
+                            <li class="select__variant" data-value='Cineworld'>Cineworld</li>
+                            <li class="select__variant" data-value='Empire'>Empire</li>
+                            <li class="select__variant" data-value='Everyman'>Everyman</li>
+                            <li class="select__variant" data-value='Odeon'>Odeon</li>
+                            <li class="select__variant" data-value='Picturehouse'>Picturehouse</li>
+                        </ul>
+
+                        <ul class="select__group film-category">
+                            <li class="select__variant" data-value="Children's">Children's</li>
+                            <li class="select__variant" data-value='Comedy'>Comedy</li>
+                            <li class="select__variant" data-value='Drama'>Drama</li>
+                            <li class="select__variant" data-value='Fantasy'>Fantasy</li>
+                            <li class="select__variant" data-value='Horror'>Horror</li>
+                            <li class="select__variant" data-value='Thriller'>Thriller</li>
+                        </ul>
+
+                        <ul class="select__group actors">
+                            <li class="select__variant" data-value='Leonardo DiCaprio'>Leonardo DiCaprio</li>
+                            <li class="select__variant" data-value='Johnny Depp'>Johnny Depp</li>
+                            <li class="select__variant" data-value='Jack Nicholson'>Jack Nicholson</li>
+                            <li class="select__variant" data-value='Robert De Niro'>Robert De Niro</li>
+                            <li class="select__variant" data-value='Morgan Freeman'>Morgan Freeman</li>
+                            <li class="select__variant" data-value='Jim Carrey'>Jim Carrey</li>
+                            <li class="select__variant" data-value='Adam Sandler'>Adam Sandler</li>
+                            <li class="select__variant" data-value='Ben Stiller'>Ben Stiller</li>
+                        </ul>
+
+                        <ul class="select__group director">
+                            <li class="select__variant" data-value='Steven Spielberg'>Steven Spielberg</li>
+                            <li class="select__variant" data-value='Martin Scorsese'>Martin Scorsese</li>
+                            <li class="select__variant" data-value='Guy Ritchie'>Guy Ritchie</li>
+                            <li class="select__variant" data-value='Christopher Nolan'>Christopher Nolan</li>
+                            <li class="select__variant" data-value='Tim Burton'>Tim Burton</li>
+                        </ul>
+
+                        <ul class="select__group country">
+                            <li class="select__variant" data-value='USA'>USA</li>
+                            <li class="select__variant" data-value='Germany'>Germany</li>
+                            <li class="select__variant" data-value='Australia'>Australia</li>
+                            <li class="select__variant" data-value='UK'>UK</li>
+                            <li class="select__variant" data-value='Japan'>Japan</li>
+                            <li class="select__variant" data-value='Serbia'>Serbia</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <h2 id='target nowincinema' class="page-heading heading--outcontainer">Now in the cinema</h2>
+
+
+        <div class="col-sm-12">
+            <nav class="text-center" aria-label="pagination ">
+                <ul class="pager">
+                    <li id="top-first-page"><a href="" onclick="return false;">First</a></li>
+                    <li id="top-previous-page"><a href="" onclick="return false;">Previous</a></li>
+                    <li id="top-current-page"><a href="" onclick="return false;"
+                                                 style="pointer-events: none; cursor: default;"></a></li>
+                    <li id="top-next-page"><a href="" onclick="return false;">Next</a></li>
+                    <li id="top-last-page"><a href="" onclick="return false;">Last</a></li>
+                </ul>
+            </nav>
+            <div class="row">
+                <div class="col-sm-8 col-md-12">
+                    <div class="clearfix"></div>
+                    <div id="movie-container"></div>
+                    <nav class="text-center" aria-label="pagination ">
+                        <ul class="pager">
+                            <li id="bottom-first-page"><a href="" onclick="return false;">First</a></li>
+                            <li id="bottom-previous-page"><a href="" onclick="return false;">Previous</a></li>
+                            <li id="bottom-current-page"><a href="" onclick="return false;"
+                                                            style="pointer-events: none; cursor: default;"></a></li>
+                            <li id="bottom-next-page"><a href="" onclick="return false;">Next</a></li>
+                            <li id="bottom-last-page"><a href="" onclick="return false;">Last</a></li>
+                        </ul>
+                    </nav>
+                    <!--<button onclick="topFunction()" id="myBtn" title="Go to top"><span-->
+                    <!--class="glyphicon glyphicon-chevron-up"></span>-->
+                    <!--</button>-->
+
+
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+                    <!--<div class="movie movie&#45;&#45;test movie&#45;&#45;test&#45;&#45;dark movie&#45;&#45;test&#45;&#45;left">-->
+                    <!--<div class="movie__images">-->
+                    <!--<a href="movie-page-left.html" class="movie-beta__link">-->
+                    <!--<img alt='' src="images/movie/movie-time8.jpg"/>-->
+                    <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="movie__info">-->
+                    <!--<a href='movie-page-left.html' class="movie__title">Gravity (2013)  </a>-->
+
+                    <!--<p class="movie__time">91 min</p>-->
+
+                    <!--<p class="movie__option"><a href="#">Sci-Fi</a> | <a href="#">Thriller</a> | <a href="#">Drama</a></p>-->
+
+                    <!--<div class="movie__rate">-->
+                    <!--<div class="score"></div>-->
+                    <!--<span class="movie__rating">4.1</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+                    <!--<div class="movie movie&#45;&#45;test movie&#45;&#45;test&#45;&#45;light movie&#45;&#45;test&#45;&#45;left">-->
+                    <!--<div class="movie__images">-->
+                    <!--<a href="movie-page-left.html" class="movie-beta__link">-->
+                    <!--<img alt='' src="images/movie/movie-time1.jpg"/>-->
+                    <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="movie__info">-->
+                    <!--<a href='movie-page-left.html' class="movie__title">The Hobbit: The Desolation of Smaug (2013)  </a>-->
+
+                    <!--<p class="movie__time">169 min</p>-->
+
+                    <!--<p class="movie__option"><a href="#">Adventure</a> | <a href="#">Fantasy</a> | <a href="#">Drama</a></p>-->
+
+                    <!--<div class="movie__rate">-->
+                    <!--<div class="score"></div>-->
+                    <!--<span class="movie__rating">5.0</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+                    <!--<div class="movie movie&#45;&#45;test movie&#45;&#45;test&#45;&#45;light movie&#45;&#45;test&#45;&#45;right">-->
+                    <!--<div class="movie__images">-->
+                    <!--<a href="movie-page-left.html" class="movie-beta__link">-->
+                    <!--<img alt='' src="images/movie/movie-time9.jpg"/>-->
+                    <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="movie__info">-->
+                    <!--<a href='movie-page-left.html' class="movie__title">The Hunger Games: Catching Fire (2013)   </a>-->
+
+                    <!--<p class="movie__time">146 min</p>-->
+
+                    <!--<p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a href="#">Sci-Fi</a></p>-->
+
+                    <!--<div class="movie__rate">-->
+                    <!--<div class="score"></div>-->
+                    <!--<span class="movie__rating">4.9</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+
+                    <!--&lt;!&ndash; Movie variant with time &ndash;&gt;-->
+                    <!--<div class="movie movie&#45;&#45;test movie&#45;&#45;test&#45;&#45;dark movie&#45;&#45;test&#45;&#45;right">-->
+                    <!--<div class="movie__images">-->
+                    <!--<a href="movie-page-left.html" class="movie-beta__link">-->
+                    <!--<img alt='' src="images/movie/movie-time10.jpg"/>-->
+                    <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="movie__info">-->
+                    <!--<a href='movie-page-left.html' class="movie__title">Thor: The Dark World (2013) </a>-->
+
+                    <!--<p class="movie__time">112 min</p>-->
+
+                    <!--<p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a href="#">Fantasy</a></p>-->
+
+                    <!--<div class="movie__rate">-->
+                    <!--<div class="score"></div>-->
+                    <!--<span class="movie__rating">5.0</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+
+                    <div class="row">
+                        <div class="social-group">
+                            <div class="col-sm-6 col-md-4 col-sm-push-6 col-md-push-4">
+                                <div class="social-group__head"></div>
+                                <div class="social-group__content">A lot of fun, discussions, queezes and contests among
+                                    members.
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix visible-sm"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <h2 class="page-heading">Latest news</h2>
+
+            <div class="col-sm-4 similar-wrap col--remove">
+                <div class="post post--preview post--preview--wide">
+                    <div class="post__image">
+                        <img alt='' src="images/client-photo/post-thor.jpg"/>
+                        <div class="social social--position social--hide">
+                            <span class="social__name">Share:</span>
+                            <a href='#' class="social__variant social--first fa fa-facebook"></a>
+                            <a href='#' class="social__variant social--second fa fa-twitter"></a>
+                            <a href='#' class="social__variant social--third fa fa-vk"></a>
+                        </div>
+                    </div>
+                    <p class="post__date">22 October 2013 </p>
+                    <a href="single-page-left.html" class="post__title">"Thor: The Dark World" - World Premiere</a>
+                    <a href="single-page-left.html" class="btn read-more post--btn">read more</a>
+                </div>
+            </div>
+            <div class="col-sm-4 similar-wrap col--remove">
+                <div class="post post--preview post--preview--wide">
+                    <div class="post__image">
+                        <img alt='' src="images/client-photo/post-annual.jpg"/>
+                        <div class="social social--position social--hide">
+                            <span class="social__name">Share:</span>
+                            <a href='#' class="social__variant social--first fa fa-facebook"></a>
+                            <a href='#' class="social__variant social--second fa fa-twitter"></a>
+                            <a href='#' class="social__variant social--third fa fa-vk"></a>
+                        </div>
+                    </div>
+                    <p class="post__date">22 October 2013 </p>
+                    <a href="single-page-left.html" class="post__title">30th Annual Night Of Stars Presented By The
+                        Fashion Group International</a>
+                    <a href="single-page-left.html" class="btn read-more post--btn">read more</a>
+                </div>
+            </div>
+            <div class="col-sm-4 similar-wrap col--remove">
+                <div class="post post--preview post--preview--wide">
+                    <div class="post__image">
+                        <img alt='' src="images/client-photo/post-awards.jpg"/>
+                        <div class="social social--position social--hide">
+                            <span class="social__name">Share:</span>
+                            <a href='#' class="social__variant social--first fa fa-facebook"></a>
+                            <a href='#' class="social__variant social--second fa fa-twitter"></a>
+                            <a href='#' class="social__variant social--third fa fa-vk"></a>
+                        </div>
+                    </div>
+                    <p class="post__date">22 October 2013 </p>
+                    <a href="single-page-left.html" class="post__title">Hollywood Film Awards 2013</a>
+                    <a href="single-page-left.html" class="btn read-more post--btn">read more</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="clearfix"></div>
+
+    <footer class="footer-wrapper">
+        <section class="container">
+            <div class="col-xs-4 col-md-2 footer-nav">
+                <ul class="nav-link">
+                    <li><a href="#" class="nav-link__item">Cities</a></li>
+                    <li><a href="movie-list-left.html" class="nav-link__item">Movies</a></li>
+                    <li><a href="trailer.html" class="nav-link__item">Trailers</a></li>
+                    <li><a href="rates-left.html" class="nav-link__item">Rates</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-4 col-md-2 footer-nav">
+                <ul class="nav-link">
+                    <li><a href="coming-soon.html" class="nav-link__item">Coming soon</a></li>
+                    <li><a href="cinema-list.html" class="nav-link__item">Cinemas</a></li>
+                    <li><a href="offers.html" class="nav-link__item">Best offers</a></li>
+                    <li><a href="news-left.html" class="nav-link__item">News</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-4 col-md-2 footer-nav">
+                <ul class="nav-link">
+                    <li><a href="#" class="nav-link__item">Terms of use</a></li>
+                    <li><a href="gallery-four.html" class="nav-link__item">Gallery</a></li>
+                    <li><a href="contact.html" class="nav-link__item">Contacts</a></li>
+                    <li><a href="page-elements.html" class="nav-link__item">Shortcodes</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="footer-info">
+                    <p class="heading-special--small">A.Movie<br/><span class="title-edition">in the social media</span>
+                    </p>
+
+                    <div class="social">
+                        <a href='#' class="social__variant fa fa-facebook"></a>
+                        <a href='#' class="social__variant fa fa-twitter"></a>
+                        <a href='#' class="social__variant fa fa-vk"></a>
+                        <a href='#' class="social__variant fa fa-instagram"></a>
+                        <a href='#' class="social__variant fa fa-tumblr"></a>
+                        <a href='#' class="social__variant fa fa-pinterest"></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <p class="copy">&copy; A.Movie, 2013. All rights reserved. Done by Olia Gozha</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+</div>
+
+<!-- open/close -->
+<div class="overlay overlay-hugeinc">
+
+    <section class="container">
+
+        <div class="col-sm-4 col-sm-offset-4">
+            <button type="button" class="overlay-close">Close</button>
+            <form id="login-form" class="login" method='get' novalidate=''>
+                <p class="login__title">sign in <br/><span class="login-edition">welcome to A.Movie</span></p>
+
+                <div class="social social--colored">
+                    <a href='#' class="social__variant fa fa-facebook"></a>
+                    <a href='#' class="social__variant fa fa-twitter"></a>
+                    <a href='#' class="social__variant fa fa-tumblr"></a>
+                </div>
+
+                <p class="login__tracker">or</p>
+
+                <div class="field-wrap">
+                    <input type='email' placeholder='Email' name='user-email' class="login__input"/>
+                    <input type='password' placeholder='Password' name='user-password' class="login__input"/>
+
+                    <input type='checkbox' id='#informed' class='login__check styled'/>
+                    <label for='#informed' class='login__check-info'>remember me</label>
+                </div>
+
+                <div class="login__control">
+                    <button type='submit' class="btn btn-md btn--warning btn--wider">sign in</button>
+                    <a href="#" class="login__tracker form__tracker">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+
+        <!--!!!!!!!!!!!!!!!!!!!!!!!!!-->
+        <div style="visibility:hidden">
+            <div id="movie0">
+                <div class="col-sm-6 movie movie--test movie--test--dark movie--test--left">
+                    <div class="movie__images">
+                        <a href="movie-page-left.html" class="trailer-sample-test ">
+                            <img style="height:302.45px; width:212.5px;" class="movie__image" alt=""
+                                 src="images/movie/movie-time8.jpg"/>
+                        </a>
+                    </div>
+
+                    <div class="movie__info">
+                        <a href="" class="movie__title trailer-sample"> </a>
+
+                        <div class="row">
+                            <!--<h3><a th:href="@{/movie/info/{title}(title = ${movie.name})}">Edit</a></h3>-->
+                            <!--<h3 class="movieName"><a th:href="@{/}">Edit</a></h3>-->
+                            <a class="movie-add" href=""> <span
+                                    class="glyphicon glyphicon-heart pull-right"> </span></a>
+                            <a sec:authorize="hasRole('ROLE_ADMIN')" class="movie-delete" href=""> <span
+                                    class="glyphicon glyphicon-trash pull-right"> </span></a>
+                            <a sec:authorize="hasRole('ROLE_ADMIN')" class="movie-edit" href=""> <span
+                                    class="glyphicon glyphicon-pencil pull-right"> </span></a>
+                        </div>
+
+
+                        <p class="movie__year"></p>
+                        <p class="movie__time"></p>
+                        <p class="movie__studio"></p>
+                        <p class="movie__director"></p>
+                        <p class="movie__language"></p>
+                        <!--<p class="movie__actors"></p>-->
+                        <p class="movie__categories"></p>
+
+                        <!--&lt;!&ndash;<p id="categories"></p>&ndash;&gt;-->
+                        <!--<p id="actors"></p>-->
+
+
+                        <div class="movie__rate">
+                            <div class="score" style="cursor: pointer;"><img alt="1" src="images/rate/star-off.svg"
+                                                                             title="bad"/>&nbsp;<img alt="2"
+                                                                                                     src="images/rate/star-off.svg"
+                                                                                                     title="poor"/>&nbsp;<img
+                                    alt="3" src="images/rate/star-off.svg" title="regular"/>&nbsp;<img alt="4"
+                                                                                                       src="images/rate/star-off.svg"
+                                                                                                       title="good"/>&nbsp;<img
+                                    alt="5" src="images/rate/star-off.svg" title="gorgeous"/><input name="score"
+                                                                                                    type="hidden"/>
+                            </div>
+                            <span class="movie__rating"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--!!!!!!!!!!!!!!!!!!!!!!!!!-->
+
+
+        <!--Modal - Trailer-->
+
+        <row>
+            <!--<h1>Bootstrap Modal</h1>-->
+            <!--&lt;!&ndash; Trigger the modal with a button &ndash;&gt;-->
+            <!--<button type="button" class="btn btn-info btn-lg" id="btnId">Open Modal</button>-->
+
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="modalId" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Bootstrap Modal content-->
+                    <div class="modal-content" id="modal-id">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="greetingId"></p>
+                            <!-- 16:9 aspect ratio -->
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe id="iframe1" src="" frameborder="0"
+                                        allowfullscreen="true"></iframe>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="close-button" data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </row>
+
+        <!--Modal - Trailer-->
+
+        <div class="hidden-content">
+            <div class="col-sm-4 col-md-3">
+                <a href='https://www.youtube.com/watch?v=Kb3ykVYvT4U' class="trailer-sample">
+                    <!--<img alt='' src="images/trailers/trailer-1.jpg">-->
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<header th:include="fragments/footer"></header>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/getrequest.js"></script>
+
+
+<!-- jQuery 3.1.1-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="js/external/jquery-3.1.1.min.js"><\/script>')</script>-->
+<!-- Migrate -->
+<script src="js/external/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap 3-->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!-- Mobile menu -->
+<script src="js/jquery.mobile.menu.js"></script>
+<!-- Select -->
+<script src="js/external/jquery.selectbox-0.2.min.js"></script>
+<!-- Stars rate -->
+<script src="js/external/jquery.raty.js"></script>
+
+<!-- Form element -->
+<script src="js/external/form-element.js"></script>
+<!-- Form validation -->
+<script src="js/form.js"></script>
+
+
+<!-- Custom -->
+<script src="js/custom.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_Home();
+    });
+</script>
+<!-- JavaScript-->
+<!-- jQuery 3.1.1-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="js/external/jquery-3.1.1.min.js"><\/script>')</script>-->
+<!-- Migrate -->
+<script src="js/external/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap 3-->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!-- Mobile menu -->
+<script src="js/jquery.mobile.menu.js"></script>
+<!-- Select -->
+<script src="js/external/jquery.selectbox-0.2.min.js"></script>
+<!-- Magnific-popup -->
+<script src="js/external/jquery.magnific-popup.min.js"></script>
+
+<!-- Form element -->
+<script src="js/external/form-element.js"></script>
+<!-- Form validation -->
+<script src="js/form.js"></script>
+
+<!-- Custom -->
+<script src="js/custom.js"></script>
+
+<!--<script type="text/javascript">-->
+    <!--$(document).ready(function () {-->
+        <!--init_Trailer();-->
+    <!--});-->
+<!--</script>-->
+</body>
+</html>

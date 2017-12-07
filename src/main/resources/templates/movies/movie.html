@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Spring Boot - POST-GET AJAX Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+</head>
+<body>
+<header th:include="fragments/navbar"></header>
+
+
+<div class="container col-lg-12">
+    <nav class="text-center" aria-label="pagination ">
+        <ul class="pager">
+            <li id="top-first-page"><a href="" onclick="return false;">First</a></li>
+            <li id="top-previous-page"><a href="" onclick="return false;">Previous</a></li>
+            <li id="top-current-page"><a href="" onclick="return false;"
+                                         style="pointer-events: none; cursor: default;"></a></li>
+            <li id="top-next-page"><a href="" onclick="return false;">Next</a></li>
+            <li id="top-last-page"><a href="" onclick="return false;">Last</a></li>
+        </ul>
+    </nav>
+    <div id="movie-container"></div>
+    <nav class="text-center" aria-label="pagination ">
+        <ul class="pager">
+            <li id="bottom-first-page"><a href="" onclick="return false;" >First</a></li>
+            <li id="bottom-previous-page"><a href="" onclick="return false;" >Previous</a></li>
+            <li id="bottom-current-page"><a href="" onclick="return false;"
+                   style="pointer-events: none; cursor: default;"></a></li>
+            <li id="bottom-next-page"><a href="" onclick="return false;">Next</a></li>
+            <li id="bottom-last-page"><a href="" onclick="return false;" >Last</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+<row>
+    <!--<h1>Bootstrap Modal</h1>-->
+    <!--&lt;!&ndash; Trigger the modal with a button &ndash;&gt;-->
+    <!--<button type="button" class="btn btn-info btn-lg" id="btnId">Open Modal</button>-->
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="modalId" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Bootstrap Modal content-->
+            <div class="modal-content" id="modal-id">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="greetingId"></p>
+                    <!-- 16:9 aspect ratio -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe id="iframe1" src="https://www.youtube.com/embed/AntcyqJ6brc?rel=0" frameborder="0"
+                                allowfullscreen="true"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="close-button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</row>
+
+
+<div id="invisible" style="visibility:hidden">
+    <div class="row" id="movie0">
+        <div class="well col-lg-10 col-sm-offset-1">
+            <div class="col-sm-offset-1">
+                <div class="row">
+                    <h3><a th:href="@{/movie/info/{title}(title = ${movie.name})}">Edit</a></h3>
+                    <h3 class="movieName">Thumbnail label</h3>
+                </div>
+                <div class="row">
+                    <img class="col-lg-2" src="/images/no-image.jpg"/>
+                    <div class="col-lg-10">
+                        <div class="row">
+                            <h4>Description:</h4>
+
+                            <p id="info"></p>
+                            <!--<p>-->
+                            <!--<button href="#" class="btn btn-primary modal-button" role="button">Button</button>-->
+                            <!--<a href="#" class="btn btn-default" role="button">Button</a></p>-->
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="row">
+                                <div>
+                                    <p class="col-lg-1 text-center">YEAR</p>
+                                    <p class="col-lg-2" id="year"></p>
+                                </div>
+                                <div>
+                                    <p class="col-lg-1 text-center">STUDIO</p>
+                                    <p class="col-lg-2" id="studio"></p>
+                                </div>
+                                <div>
+                                    <p class="col-lg-1 text-center">DURATION</p>
+                                    <p class="col-lg-2" id="duration"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <p class="col-lg-1 text-center">LANGUAGE</p>
+                                    <p class="col-lg-2" id="language"></p>
+                                </div>
+                                <div>
+                                    <p class="col-lg-1 text-center">DIRECTOR</p>
+                                    <p class="col-lg-2" id="director"></p>
+                                </div>
+                                <div>
+                                    <p class="col-lg-1 text-center">IMDB RATING</p>
+                                    <p class="col-lg-2" id="rating"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <p class="col-lg-1 text-center">CAST</p>
+                                    <p class="col-lg-2" id="actors"></p>
+                                </div>
+                                <div>
+                                    <p class="col-lg-1 text-center">GENRE</p>
+                                    <p class="col-lg-2" id="categories"></p>
+                                </div>
+                                <!--<div>-->
+                                    <!--<p class="col-lg-1 text-center">DURATION</p>-->
+                                    <!--<p class="col-lg-2">63 min</p>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div id="invisible" style="visibility:hidden">-->
+<!--<div class="row" id="movie0">-->
+<!--<div class="well col-lg-10 col-sm-offset-1">-->
+<!--<div class="col-sm-offset-1">-->
+<!--<div class="row">-->
+<!--<h3 class="movieName">Thumbnail label</h3>-->
+<!--<img class="col-lg-3" src="/images/thumbail.svg"/>-->
+<!--<div class="col-lg-8">-->
+<!--<div class="thumbnail">-->
+<!--<div class="caption">-->
+<!--&lt;!&ndash;<h3 class="movieName">Thumbnail label</h3>&ndash;&gt;-->
+<!--<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi-->
+<!--porta gravida at eget metus.-->
+<!--Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam id dolor id nibh-->
+<!--ultricies vehicula ut id elit. Nullam id dolor id nibh ultricies vehicula ut id-->
+<!--elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non-->
+<!--mi porta gravida at eget metus.-->
+<!--Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac-->
+<!--facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.-->
+<!--Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac-->
+<!--facilisis in, egestas eget quam. Cras justo odio, dapibus ac facilisis in, egestas-->
+<!--eget quam. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>-->
+<!--<p>-->
+<!--<button href="#" class="btn btn-primary modal-button" role="button">Button</button>-->
+<!--<a href="#" class="btn btn-default" role="button">Button</a></p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/getrequest.js"></script>
+
+</body>
+</html>
